@@ -1,0 +1,20 @@
+contract MidnightProbeRegistry {
+  ledger {
+    last_probe_at: Uint64;
+    chain_healthy: Boolean;
+    spec_version: Uint32;
+    validator_working: Boolean;
+  }
+
+  circuit record_probe(
+    witness probe_timestamp: Uint64,
+    witness spec_version: Uint32,
+    witness validator_panicked: Boolean,
+    witness canary_passed: Boolean,
+  ) {
+    ledger.last_probe_at = disclose(probe_timestamp);
+    ledger.spec_version = disclose(spec_version);
+    ledger.validator_working = disclose(!validator_panicked);
+    ledger.chain_healthy = disclose(canary_passed && !validator_panicked);
+  }
+}

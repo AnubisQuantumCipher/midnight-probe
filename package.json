@@ -1,0 +1,61 @@
+{
+  "name": "midnight-probe",
+  "version": "1.0.0",
+  "description": "Runtime diagnostics, compatibility testing, and transaction validation for the Midnight Network",
+  "type": "module",
+  "author": "AnubisQuantumCipher",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnubisQuantumCipher/midnight-probe"
+  },
+  "homepage": "https://github.com/AnubisQuantumCipher/midnight-probe",
+  "bugs": {
+    "url": "https://github.com/AnubisQuantumCipher/midnight-probe/issues"
+  },
+  "keywords": [
+    "midnight",
+    "midnight-network",
+    "diagnostics",
+    "compatibility",
+    "substrate",
+    "polkadot",
+    "zero-knowledge",
+    "blockchain"
+  ],
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    }
+  },
+  "bin": {
+    "midnight-probe": "dist/bin/cli.js"
+  },
+  "files": [
+    "dist",
+    "contracts",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist coverage .vitest",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "dependencies": {
+    "@midnight-ntwrk/ledger-v8": "8.0.3",
+    "@polkadot/api": "16.5.6"
+  },
+  "devDependencies": {
+    "@types/node": "25.5.0",
+    "typescript": "6.0.2",
+    "vitest": "4.1.2"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
