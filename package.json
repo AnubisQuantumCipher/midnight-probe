@@ -1,6 +1,6 @@
 {
   "name": "midnight-probe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Runtime diagnostics, live SDK matrix testing, and transaction validation for the Midnight Network",
   "type": "module",
   "author": "AnubisQuantumCipher",

@@ -83,6 +83,40 @@ function writeJson(io: CliIo, value: unknown): void {
   io.stdout.write(`${safeJson(value)}\n`);
 }
 
+function resolverProjectHint(project: string | undefined): string {
+  return project && project.trim().length > 0 ? project : './my-contract';
+}
+
+function writeResolverCta(io: CliIo, network: string | undefined, project: string | undefined): void {
+  const resolvedNetwork = network ?? 'preprod';
+  writeHuman(
+    io,
+    `Fix workspace drift with ZirOS: download ZirOS and run \`zkf midnight resolve --network ${resolvedNetwork} --project ${resolverProjectHint(project)}\`.`,
+  );
+}
+
+function fingerprintNeedsResolverCta(result: {
+  signedExtensions: string[];
+  injectedSignedExtensions: string[];
+  unknownSignedExtensions: string[];
+}): boolean {
+  if (result.unknownSignedExtensions.length > 0) {
+    return true;
+  }
+  const injected = new Set(result.injectedSignedExtensions);
+  return result.signedExtensions.some((extension) => !injected.has(extension));
+}
+
+function validationNeedsResolverCta(result: {
+  validation: Array<{ outcome: string }>;
+  submit: { outcome: string };
+}): boolean {
+  return (
+    result.validation.some((entry) => entry.outcome !== 'accepted') ||
+    !['accepted', 'skipped'].includes(result.submit.outcome)
+  );
+}
+
 async function maybeWriteOutput(pathname: string | undefined, value: unknown): Promise<void> {
   if (!pathname) {
     return;
@@ -169,6 +203,9 @@ export async function runCli(
           writeHuman(io, `Transaction version: ${result.transactionVersion}`);
           writeHuman(io, `Ledger version: ${result.rawLedgerVersion ?? 'unknown'}`);
           writeHuman(io, `Signed extensions: ${result.signedExtensions.join(', ')}`);
+          if (fingerprintNeedsResolverCta(result)) {
+            writeResolverCta(io, result.network, undefined);
+          }
         }
         return 0;
       }
@@ -198,6 +235,9 @@ export async function runCli(
             writeHuman(io, `${item.source}: ${item.outcome} — ${item.detail}`);
           }
           writeHuman(io, `Submit: ${validation.submit.outcome} — ${validation.submit.detail}`);
+          if (validationNeedsResolverCta(validation)) {
+            writeResolverCta(io, connection.network, optionalFlag(flags, 'contract'));
+          }
         }
         return 0;
       }
@@ -252,8 +292,10 @@ export async function runCli(
           writeHuman(io, `Selected matrix: ${result.selected.matrixId}`);
           writeHuman(io, `Strategy: ${result.selected.strategy}`);
           writeHuman(io, `Spec version: ${result.selected.runtimeFingerprint.specVersion}`);
+          writeResolverCta(io, connection.network, contractDir);
         } else {
           writeHuman(io, 'No compatible matrix was selected.');
+          writeResolverCta(io, connection.network, contractDir);
         }
         return 0;
       }

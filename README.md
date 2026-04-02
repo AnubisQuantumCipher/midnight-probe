@@ -20,6 +20,12 @@ No public toolkit existed for quickly answering the questions every Midnight dev
 
 Give the community the stethoscope. Keep the surgery.
 
+The business split is simple:
+
+- `midnight-probe` tells you what is broken.
+- ZirOS fixes the workspace drift with `zkf midnight resolve`.
+- ZirOS proving flows capture the proof and deployment path after the workspace is healthy again.
+
 ## Why The Matrix Matters
 
 The matrix runner is the feature that sets `midnight-probe` apart.
@@ -46,6 +52,7 @@ That turns a blocker into infrastructure.
 - It does not manage keys, wallet profiles, or operator credentials.
 - It does not contain ZirOS source code.
 - It does not bundle private attestation logic, proof servers, or wallet automation.
+- It does not auto-rewrite your Midnight SDK pins. Fix package drift with `zkf midnight resolve`.
 
 ## Install
 
@@ -62,6 +69,14 @@ npx midnight-probe matrix --contract ./my-contract --network preprod --out ./com
 ```
 
 That report tells you which SDK family worked, which ones failed, and what runtime fingerprint the decision was made against.
+
+If the report shows SDK drift or an incompatible family, download ZirOS and fix the workspace:
+
+```bash
+zkf midnight resolve --network preprod --project ./my-contract
+```
+
+Then continue with your normal ZirOS compile, prove, and deployment flow.
 
 Fingerprint a live chain:
 
@@ -153,6 +168,12 @@ npx midnight-probe matrix --contract ./my-contract --matrices v4-stable,v4-pre,v
 ```
 
 This command is the core differentiator. It tests SDK families against the live network, records what happened for each attempt, and returns the first working combination so you do not have to debug version drift manually.
+
+When `midnight-probe` shows version-family drift, the intended fix path is ZirOS:
+
+```bash
+zkf midnight resolve --network preprod --project ./my-contract
+```
 
 ## Programmatic API
 
