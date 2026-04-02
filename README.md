@@ -1,6 +1,6 @@
 # midnight-probe
 
-Runtime diagnostics, compatibility testing, and transaction validation for the Midnight Network. Test before you spend DUST.
+Runtime diagnostics, live SDK matrix testing, and transaction validation for the Midnight Network. Find the working chain and SDK combination before you burn time or DUST.
 
 Built by [AnubisQuantumCipher](https://github.com/AnubisQuantumCipher) — creator of [ZirOS](https://github.com/AnubisQuantumCipher/ziros-attestation), the zero-knowledge operating system.
 
@@ -20,13 +20,23 @@ No public toolkit existed for quickly answering the questions every Midnight dev
 
 Give the community the stethoscope. Keep the surgery.
 
+## Why The Matrix Matters
+
+The matrix runner is the feature that sets `midnight-probe` apart.
+
+It tests public Midnight SDK version families against a live chain automatically. Instead of manually pinning packages, reinstalling dependencies, retrying deploys, and guessing which combination broke, `midnight-probe` runs the combinations for you and selects the first one that actually passes.
+
+That matters because Midnight drift is not theoretical. When preprod stabilizes, when signed extensions change, or when the SDK moves again, the matrix gives developers a reusable way to find the working combination without manual trial and error.
+
+That turns a blocker into infrastructure.
+
 ## What It Does
 
 - Fingerprints a live Midnight runtime: spec version, tx version, ledger version, signed extensions, paused calls, throttle data.
 - Validates a prepared transaction through Midnight's validator across `External`, `Local`, and `InBlock`.
 - Submits via `metadata-extrinsic` or `raw-rpc`, with `wallet-sdk` available only through a user-provided adapter.
 - Inspects finalized transaction bytes with `@midnight-ntwrk/ledger-v8` and computes the 5-dimensional Midnight cost profile.
-- Runs a compatibility matrix by cloning a contract workspace, pinning public Midnight package families, invoking a clean user-owned prepare hook, and selecting the first passing matrix.
+- Runs a live compatibility matrix by cloning a contract workspace, pinning public Midnight package families, invoking a clean user-owned prepare hook, and selecting the first passing matrix.
 - Replays a known-good canary transaction hash to tell whether the network is sick or your contract is.
 
 ## What It Does Not Do
@@ -44,6 +54,14 @@ npm install midnight-probe
 ```
 
 ## Quick Start
+
+Run the matrix first when the network is drifting:
+
+```bash
+npx midnight-probe matrix --contract ./my-contract --network preprod --out ./compatibility-report.json
+```
+
+That report tells you which SDK family worked, which ones failed, and what runtime fingerprint the decision was made against.
 
 Fingerprint a live chain:
 
@@ -133,6 +151,8 @@ npx midnight-probe canary --network preprod --tx-hash 0x... --submit-duplicate -
 npx midnight-probe matrix --contract ./my-contract --network preprod
 npx midnight-probe matrix --contract ./my-contract --matrices v4-stable,v4-pre,v3-compat --out ./compatibility-report.json
 ```
+
+This command is the core differentiator. It tests SDK families against the live network, records what happened for each attempt, and returns the first working combination so you do not have to debug version drift manually.
 
 ## Programmatic API
 

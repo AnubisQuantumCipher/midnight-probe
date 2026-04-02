@@ -1,7 +1,7 @@
 {
   "name": "midnight-probe",
   "version": "1.0.0",
-  "description": "Runtime diagnostics, compatibility testing, and transaction validation for the Midnight Network",
+  "description": "Runtime diagnostics, live SDK matrix testing, and transaction validation for the Midnight Network",
   "type": "module",
   "author": "AnubisQuantumCipher",
   "license": "MIT",
@@ -18,6 +18,8 @@
     "midnight-network",
     "diagnostics",
     "compatibility",
+    "matrix",
+    "sdk-compatibility",
     "substrate",
     "polkadot",
     "zero-knowledge",
