@@ -1,6 +1,6 @@
 {
   "name": "midnight-probe",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Runtime diagnostics, live SDK matrix testing, and transaction validation for the Midnight Network",
   "type": "module",
   "author": "AnubisQuantumCipher",
@@ -55,7 +55,7 @@
   "devDependencies": {
     "@types/node": "25.5.0",
     "typescript": "6.0.2",
-    "vitest": "4.1.2"
+    "vitest": "^4.1.4"
   },
   "engines": {
     "node": ">=22.0.0"

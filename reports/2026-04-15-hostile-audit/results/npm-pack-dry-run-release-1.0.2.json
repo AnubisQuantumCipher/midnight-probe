@@ -1,0 +1,276 @@
+[
+  {
+    "id": "midnight-probe@1.0.2",
+    "name": "midnight-probe",
+    "version": "1.0.2",
+    "size": 30433,
+    "unpackedSize": 134721,
+    "shasum": "6f500e1b217eeddc651b27396e37519d5a72f386",
+    "integrity": "sha512-dneNp7qe3uQEfbJ+K2IVLxD6vcrLjNvS2ZiWD43g8s9+t3rkDBfU66jI3WfHmtM54txF79t7qhi5MjV3Z1MzIQ==",
+    "filename": "midnight-probe-1.0.2.tgz",
+    "files": [
+      {
+        "path": "LICENSE",
+        "size": 1076,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 7946,
+        "mode": 420
+      },
+      {
+        "path": "contracts/MidnightProbeRegistry.compact",
+        "size": 587,
+        "mode": 420
+      },
+      {
+        "path": "dist/bin/cli.d.ts",
+        "size": 31,
+        "mode": 420
+      },
+      {
+        "path": "dist/bin/cli.js",
+        "size": 152,
+        "mode": 420
+      },
+      {
+        "path": "dist/bin/cli.js.map",
+        "size": 234,
+        "mode": 420
+      },
+      {
+        "path": "dist/examples/basic-fingerprint.d.ts",
+        "size": 11,
+        "mode": 420
+      },
+      {
+        "path": "dist/examples/basic-fingerprint.js",
+        "size": 254,
+        "mode": 420
+      },
+      {
+        "path": "dist/examples/basic-fingerprint.js.map",
+        "size": 376,
+        "mode": 420
+      },
+      {
+        "path": "dist/examples/test-deploy.d.ts",
+        "size": 11,
+        "mode": 420
+      },
+      {
+        "path": "dist/examples/test-deploy.js",
+        "size": 788,
+        "mode": 420
+      },
+      {
+        "path": "dist/examples/test-deploy.js.map",
+        "size": 919,
+        "mode": 420
+      },
+      {
+        "path": "dist/examples/version-matrix.d.ts",
+        "size": 11,
+        "mode": 420
+      },
+      {
+        "path": "dist/examples/version-matrix.js",
+        "size": 367,
+        "mode": 420
+      },
+      {
+        "path": "dist/examples/version-matrix.js.map",
+        "size": 434,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/chain-canary.d.ts",
+        "size": 835,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/chain-canary.js",
+        "size": 5111,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/chain-canary.js.map",
+        "size": 4259,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/cli-core.d.ts",
+        "size": 1087,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/cli-core.js",
+        "size": 10594,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/cli-core.js.map",
+        "size": 9080,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/compatibility.d.ts",
+        "size": 983,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/compatibility.js",
+        "size": 2792,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/compatibility.js.map",
+        "size": 2872,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/index.d.ts",
+        "size": 774,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/index.js",
+        "size": 372,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/index.js.map",
+        "size": 369,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/matrix-runner.d.ts",
+        "size": 1683,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/matrix-runner.js",
+        "size": 11948,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/matrix-runner.js.map",
+        "size": 8806,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/polkadot-factory.d.ts",
+        "size": 1306,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/polkadot-factory.js",
+        "size": 4976,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/polkadot-factory.js.map",
+        "size": 4434,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/prepare-hook.d.ts",
+        "size": 399,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/prepare-hook.js",
+        "size": 1927,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/prepare-hook.js.map",
+        "size": 2023,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/runtime-probe.d.ts",
+        "size": 262,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/runtime-probe.js",
+        "size": 2959,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/runtime-probe.js.map",
+        "size": 2568,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/submit-strategy.d.ts",
+        "size": 544,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/submit-strategy.js",
+        "size": 4767,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/submit-strategy.js.map",
+        "size": 3637,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/tx-inspector.d.ts",
+        "size": 314,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/tx-inspector.js",
+        "size": 3516,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/tx-inspector.js.map",
+        "size": 3312,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/types.d.ts",
+        "size": 4787,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/types.js",
+        "size": 44,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/types.js.map",
+        "size": 105,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/util.d.ts",
+        "size": 2067,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/util.js",
+        "size": 6999,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/util.js.map",
+        "size": 7537,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 1476,
+        "mode": 420
+      }
+    ],
+    "entryCount": 52,
+    "bundled": []
+  }
+]
