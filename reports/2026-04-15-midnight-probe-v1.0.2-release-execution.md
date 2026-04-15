@@ -4,81 +4,81 @@ Date: 2026-04-15
 Workspace: `/Users/sicarii/work/audits/midnight-probe-20260415T124122Z`
 Release target version: `1.0.2`
 Git tag: `v1.0.2`
+Repository: `https://github.com/AnubisQuantumCipher/midnight-probe`
 
 ## Summary
 
-Release status: partial-success.
+Release status: success.
 
 Succeeded:
-- local release hardening completed
+- local hardening tranche completed
 - package version bumped from `1.0.1` to `1.0.2`
 - real dependency install succeeded
 - real TypeScript build succeeded
 - real Vitest suite passed: 21/21
-- npm pack dry-run showed `dist/` is now present in the shipped tarball
+- npm pack dry-run confirmed `dist/` ships in the tarball
+- dev-tooling audit cleaned to `0` vulnerabilities after updating `vitest` to `4.1.4`
 - GitHub main branch updated
 - Git tag `v1.0.2` pushed
 - GitHub release `v1.0.2` created
 - release tarball `midnight-probe-1.0.2.tgz` uploaded to GitHub release
-- evidence bundle zip created locally and uploaded to the GitHub release
-
-Failed:
-- npm publish to registry failed with `E404 Not Found - PUT https://registry.npmjs.org/midnight-probe`
+- npm package `midnight-probe@1.0.2` published successfully
+- npm `latest` dist-tag now points to `1.0.2`
+- evidence bundle zip created and uploaded to the GitHub release
 
 ## Exact outcomes
 
 ### Build and test
-- `npm install` succeeded
-- `npm run build` succeeded
-- `npm test` succeeded
-- `npm audit` after upgrading `vitest` to `4.1.4` reported `0` vulnerabilities
+Commands succeeded:
+- `npm install`
+- `npm install --save-dev vitest@4.1.4`
+- `npm run build`
+- `npm test`
+- `npm audit --json`
+- `npm pack --dry-run --json`
+
+Observed results:
+- tests passed: `21/21`
+- audit vulnerabilities after update: `0`
+- tarball now includes `dist/` and package entrypoints required for a usable npm release
 
 Evidence:
 - `reports/2026-04-15-hostile-audit/results/npm-audit-after-vitest-update.json`
 - `reports/2026-04-15-hostile-audit/results/npm-pack-dry-run-release-1.0.2.json`
 
 ### GitHub release
-Repository:
-- `https://github.com/AnubisQuantumCipher/midnight-probe`
-
-Release:
+Release page:
 - `https://github.com/AnubisQuantumCipher/midnight-probe/releases/tag/v1.0.2`
 
-Release asset uploaded:
-- `midnight-probe-1.0.2.tgz`
+Release assets:
+- `https://github.com/AnubisQuantumCipher/midnight-probe/releases/download/v1.0.2/midnight-probe-1.0.2.tgz`
+- `https://github.com/AnubisQuantumCipher/midnight-probe/releases/download/v1.0.2/midnight-probe-v1.0.2-evidence-bundle.zip`
+
+### npm publication
+Observed successful publish:
+- `npm publish` returned `+ midnight-probe@1.0.2`
+
+Registry verification after publish:
+- `npm view midnight-probe version maintainers --json` returned version `1.0.2`
+- `npm dist-tag ls midnight-probe` returned `latest: 1.0.2`
+
+Evidence:
+- `reports/2026-04-15-hostile-audit/results/npm-publish-attempt-with-valid-token.txt`
+- `reports/2026-04-15-hostile-audit/results/npm-view-after-publish.json`
+- `reports/2026-04-15-hostile-audit/results/npm-dist-tags.txt`
 
 ### Evidence bundle
-Local zip:
+Local bundle filename:
 - `midnight-probe-v1.0.2-evidence-bundle.zip`
 
 GitHub release asset:
 - `https://github.com/AnubisQuantumCipher/midnight-probe/releases/download/v1.0.2/midnight-probe-v1.0.2-evidence-bundle.zip`
 
-SHA-256:
-- `543ce1bd439c9bff678214279f675d6ff5f01b1214090be3c4ab29aa9b8695b2`
-
-Contents:
-- all current files under `reports/`
-- verified with `unzip -l`
-- current bundle contains `46` archived entries including the v1.0.2 release execution report
-
-### npm publish failure
-Attempted command:
-- `npm publish`
-
-Observed failure:
-- `E404 Not Found - PUT https://registry.npmjs.org/midnight-probe`
-- registry says the resource could not be found or the current auth lacks permission
-
-Important context:
-- `npm view midnight-probe version` returned `1.0.1`
-- `npm view midnight-probe maintainers --json` returned `sicarii <sic.tau@pm.me>`
-- local `.npmrc` contains an auth token entry, but `npm whoami` returned `401 Unauthorized`
-- so the current npm auth material on this machine is not sufficient for publish closure
-
-Evidence:
-- `reports/2026-04-15-hostile-audit/results/npm-publish-attempt.txt`
-- `reports/2026-04-15-hostile-audit/results/npm-publish-dry-run.txt`
+Bundle contract:
+- contains the current `reports/` tree from this release session
+- includes hostile-audit, hardening, release, and npm publication evidence
+- current final SHA-256: `517d63838d66d6c3b6add5b9a23c02d3c75fc43d31050bbfe99c0bd783ffcc77`
+- current final bundle contains `50` archived entries
 
 ## Commands executed
 
@@ -90,6 +90,8 @@ Git/GitHub:
 - `git tag -a v1.0.2 -m "midnight-probe v1.0.2"`
 - `git push origin v1.0.2`
 - `gh release create v1.0.2 midnight-probe-1.0.2.tgz --title v1.0.2 --notes-file reports/2026-04-15-v1.0.2-release-notes.md`
+- `gh release edit v1.0.2 --notes-file reports/2026-04-15-v1.0.2-release-notes.md`
+- `gh release upload v1.0.2 midnight-probe-v1.0.2-evidence-bundle.zip --clobber`
 
 Package/build:
 - `npm install`
@@ -100,6 +102,8 @@ Package/build:
 - `npm pack`
 - `npm publish --dry-run`
 - `npm publish`
+- `npm view midnight-probe version maintainers --json`
+- `npm dist-tag ls midnight-probe`
 
 Evidence packaging:
 - `zip -r midnight-probe-v1.0.2-evidence-bundle.zip reports`
@@ -108,11 +112,9 @@ Evidence packaging:
 
 ## Strongest honest conclusion
 
-I completed the GitHub side of the release and produced the evidence bundle.
+The v1.0.2 release is now fully executed across both GitHub and npm.
 
-I did not complete npm registry publication because the current npm credentials on this machine were not authorized to publish `midnight-probe@1.0.2`.
-
-So the honest closeout is:
+Release closure achieved:
 - GitHub release: complete
-- release evidence bundle: complete
-- npm registry publish: blocked by auth/permission
+- npm registry publication: complete
+- evidence bundle: complete
