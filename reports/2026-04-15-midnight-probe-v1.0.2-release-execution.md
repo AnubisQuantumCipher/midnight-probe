@@ -20,7 +20,7 @@ Succeeded:
 - Git tag `v1.0.2` pushed
 - GitHub release `v1.0.2` created
 - release tarball `midnight-probe-1.0.2.tgz` uploaded to GitHub release
-- evidence bundle zip created locally
+- evidence bundle zip created locally and uploaded to the GitHub release
 
 Failed:
 - npm publish to registry failed with `E404 Not Found - PUT https://registry.npmjs.org/midnight-probe`
@@ -50,6 +50,9 @@ Release asset uploaded:
 ### Evidence bundle
 Local zip:
 - `midnight-probe-v1.0.2-evidence-bundle.zip`
+
+GitHub release asset:
+- `https://github.com/AnubisQuantumCipher/midnight-probe/releases/download/v1.0.2/midnight-probe-v1.0.2-evidence-bundle.zip`
 
 SHA-256:
 - `8eb4592c2246924df4c58f13774af96801dbc83619aae16220ada058ae5817a5`
