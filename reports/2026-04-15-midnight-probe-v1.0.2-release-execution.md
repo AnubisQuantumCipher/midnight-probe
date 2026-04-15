@@ -55,11 +55,12 @@ GitHub release asset:
 - `https://github.com/AnubisQuantumCipher/midnight-probe/releases/download/v1.0.2/midnight-probe-v1.0.2-evidence-bundle.zip`
 
 SHA-256:
-- `8eb4592c2246924df4c58f13774af96801dbc83619aae16220ada058ae5817a5`
+- `543ce1bd439c9bff678214279f675d6ff5f01b1214090be3c4ab29aa9b8695b2`
 
 Contents:
 - all current files under `reports/`
 - verified with `unzip -l`
+- current bundle contains `46` archived entries including the v1.0.2 release execution report
 
 ### npm publish failure
 Attempted command:
