@@ -97,6 +97,59 @@ async function runCommand(command: string, args: string[], cwd: string, env: Nod
   return `${stdout}${stderr}`;
 }
 
+export interface MatrixRunnerRuntime {
+  runCommand: typeof runCommand;
+  probeRuntime: typeof probeRuntime;
+  inspectTransaction: typeof inspectTransaction;
+  validateTransaction: typeof validateTransaction;
+  loadPrepareHook: typeof loadPrepareHook;
+}
+
+const DEFAULT_MATRIX_RUNNER_RUNTIME: MatrixRunnerRuntime = {
+  runCommand,
+  probeRuntime,
+  inspectTransaction,
+  validateTransaction,
+  loadPrepareHook,
+};
+
+function buildMatrixInstallEnv(
+  baseEnv: NodeJS.ProcessEnv,
+  compactcVersion: string,
+  walletAdapterConfigured: boolean,
+): NodeJS.ProcessEnv {
+  const allowedKeys = [
+    'HOME',
+    'PATH',
+    'TMPDIR',
+    'TMP',
+    'TEMP',
+    'USER',
+    'LOGNAME',
+    'SHELL',
+    'LANG',
+    'LC_ALL',
+    'LC_CTYPE',
+    'CI',
+    'npm_config_cache',
+    'npm_config_userconfig',
+  ] as const;
+
+  const env: NodeJS.ProcessEnv = {};
+  for (const key of allowedKeys) {
+    const value = baseEnv[key];
+    if (value) {
+      env[key] = value;
+    }
+  }
+
+  env.COMPACTC_VERSION = compactcVersion;
+  if (walletAdapterConfigured) {
+    env.MIDNIGHT_PROBE_WALLET_ADAPTER = 'configured';
+  }
+  return env;
+}
+
 export async function rewritePackageJsonForMatrix(
   packageJsonPath: string,
   matrixId: CompatibilityMatrixId,
@@ -105,19 +158,38 @@ export async function rewritePackageJsonForMatrix(
   const pkg = JSON.parse(raw) as Record<string, unknown>;
   const applied: Record<string, string> = {};
   const matrix = MATRICES[matrixId];
+  const sectionNames = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'] as const;
 
-  for (const sectionName of ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'] as const) {
+  for (const sectionName of sectionNames) {
     const section = pkg[sectionName];
-    if (!section || typeof section !== 'object') {
-      continue;
+    if (section != null && typeof section !== 'object') {
+      throw new Error(`Expected ${sectionName} in ${packageJsonPath} to be an object.`);
     }
-    const record = section as Record<string, string>;
-    for (const [name, version] of Object.entries(matrix.packageVersions)) {
+  }
+
+  if (!pkg.devDependencies || typeof pkg.devDependencies !== 'object') {
+    pkg.devDependencies = {};
+  }
+
+  for (const [name, version] of Object.entries(matrix.packageVersions)) {
+    let assigned = false;
+    for (const sectionName of sectionNames) {
+      const section = pkg[sectionName];
+      if (!section || typeof section !== 'object') {
+        continue;
+      }
+      const record = section as Record<string, string>;
       if (name in record) {
         record[name] = version;
-        applied[name] = version;
+        assigned = true;
+        break;
       }
     }
+
+    if (!assigned) {
+      (pkg.devDependencies as Record<string, string>)[name] = version;
+    }
+    applied[name] = version;
   }
 
   await writeFile(packageJsonPath, `${safeJson(pkg)}\n`, 'utf-8');
@@ -162,43 +234,55 @@ export async function runCompatibilityMatrix(
     walletAdapter?: WalletSubmitAdapter;
     installDependencies?: boolean;
     hookPath?: string;
+    keepWorkspace?: boolean;
+    runtime?: Partial<MatrixRunnerRuntime>;
   },
 ): Promise<CompatibilityReport> {
   const reportPath = resolve(options.reportPath ?? DEFAULT_COMPATIBILITY_REPORT_PATH);
   const matrices = options.matrices ?? ['v4-stable', 'v4-pre', 'v3-compat'];
   const mode = options.mode ?? 'deploy';
   const strategy = options.strategy ?? 'metadata-extrinsic';
+  const runtime: MatrixRunnerRuntime = {
+    ...DEFAULT_MATRIX_RUNNER_RUNTIME,
+    ...(options.runtime ?? {}),
+  };
   let report = await readCompatibilityReport(reportPath);
 
   for (const matrixId of matrices) {
     const prepared = await prepareMatrixWorkspace(options.contractDir, matrixId);
-    const env = {
+    const installEnv = buildMatrixInstallEnv(process.env, prepared.compactcVersion, options.walletAdapter != null);
+    const hookEnv = {
       ...process.env,
-      ...options.walletAdapter ? { MIDNIGHT_PROBE_WALLET_ADAPTER: 'configured' } : {},
+      ...(options.walletAdapter ? { MIDNIGHT_PROBE_WALLET_ADAPTER: 'configured' } : {}),
       COMPACTC_VERSION: prepared.compactcVersion,
     };
 
     let attempt: CompatibilityMatrixAttempt;
     try {
       if (options.installDependencies !== false) {
-        await runCommand('npm', ['install', '--no-audit', '--no-fund'], prepared.workspaceDir, env);
+        await runtime.runCommand(
+          'npm',
+          ['install', '--ignore-scripts', '--no-audit', '--no-fund'],
+          prepared.workspaceDir,
+          installEnv,
+        );
       }
 
       const probeInput = normalizeProbeInput(
-        await loadPrepareHook(
+        await runtime.loadPrepareHook(
           {
             mode,
             network: resolveNetwork(options),
             contractDir: prepared.workspaceDir,
-            env,
+            env: hookEnv,
           },
           options.hookPath ? resolve(prepared.workspaceDir, options.hookPath) : undefined,
         ),
         mode,
       );
-      const fingerprint = await probeRuntime(options);
-      const inspection = await inspectTransaction(probeInput, options);
-      const validation = await validateTransaction(probeInput, {
+      const fingerprint = await runtime.probeRuntime(options);
+      const inspection = await runtime.inspectTransaction(probeInput, options);
+      const validation = await runtime.validateTransaction(probeInput, {
         ...options,
         strategy,
         submit: options.submit,
@@ -211,6 +295,7 @@ export async function runCompatibilityMatrix(
       attempt = {
         matrixId,
         workspaceDir: prepared.workspaceDir,
+        workspaceRetained: options.keepWorkspace === true,
         packageVersions: prepared.packageVersions,
         compactcVersion: prepared.compactcVersion,
         succeeded,
@@ -251,6 +336,7 @@ export async function runCompatibilityMatrix(
       attempt = {
         matrixId,
         workspaceDir: prepared.workspaceDir,
+        workspaceRetained: options.keepWorkspace === true,
         packageVersions: prepared.packageVersions,
         compactcVersion: prepared.compactcVersion,
         succeeded: false,
@@ -259,6 +345,15 @@ export async function runCompatibilityMatrix(
         validation: null,
         note: error instanceof Error ? error.message : String(error),
       };
+    } finally {
+      if (!options.keepWorkspace) {
+        await rm(prepared.workspaceDir, { recursive: true, force: true });
+      }
+    }
+
+    if (!options.keepWorkspace) {
+      attempt.workspaceRetained = false;
+      attempt.note = attempt.note ? `${attempt.note} Workspace removed after probe.` : 'Workspace removed after probe.';
     }
 
     report = withMatrixAttempt(report, attempt);

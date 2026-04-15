@@ -1,0 +1,91 @@
+{
+  "total": 20,
+  "passed": 16,
+  "failed": 4,
+  "results": [
+    {
+      "name": "rejects odd-length hex strings instead of truncating them silently",
+      "status": "failed",
+      "error": "Error: Expected value to contain \"even-length\""
+    },
+    {
+      "name": "describes injected and unknown signed extensions",
+      "status": "passed"
+    },
+    {
+      "name": "builds a runtime fingerprint from api state",
+      "status": "passed"
+    },
+    {
+      "name": "deserializes finalized transaction bytes and computes five-dimensional cost",
+      "status": "passed"
+    },
+    {
+      "name": "surfaces a block-fit failure when normalization rejects the tx cost",
+      "status": "passed"
+    },
+    {
+      "name": "validates and submits through raw-rpc",
+      "status": "passed"
+    },
+    {
+      "name": "classifies panic and rejection responses",
+      "status": "passed"
+    },
+    {
+      "name": "supports wallet adapter submission without bundling a wallet sdk",
+      "status": "passed"
+    },
+    {
+      "name": "fails fast when metadata submission never reaches a terminal status",
+      "status": "failed",
+      "error": "Error: Expected \"timeout\" to be \"report\""
+    },
+    {
+      "name": "loads a user-owned prepare hook",
+      "status": "passed"
+    },
+    {
+      "name": "rewrites public midnight dependencies for a matrix workspace",
+      "status": "failed",
+      "error": "Error: Expected undefined to be \"3.0.0\""
+    },
+    {
+      "name": "copies a contract workspace into an isolated temp dir",
+      "status": "passed"
+    },
+    {
+      "name": "finds a known tx hash and validates the rebuilt outer extrinsic",
+      "status": "passed"
+    },
+    {
+      "name": "writes and reads report state",
+      "status": "passed"
+    },
+    {
+      "name": "does not silently treat malformed report JSON as a missing report",
+      "status": "failed",
+      "error": "Error: Expected value to contain \"Invalid compatibility report JSON\""
+    },
+    {
+      "name": "keeps the attribution banner on stderr in json mode",
+      "status": "passed"
+    },
+    {
+      "name": "returns a non-zero exit code for unknown commands",
+      "status": "passed"
+    },
+    {
+      "name": "prints a resolver CTA for human matrix output",
+      "status": "passed"
+    },
+    {
+      "name": "keeps resolver CTA text out of matrix json output",
+      "status": "passed"
+    },
+    {
+      "name": "prints a resolver CTA for problematic fingerprint output",
+      "status": "passed"
+    }
+  ]
+}

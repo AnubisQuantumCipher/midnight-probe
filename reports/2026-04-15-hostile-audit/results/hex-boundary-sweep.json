@@ -1,0 +1,54 @@
+{
+  "oddLengthCasesAccepted": 8,
+  "cases": [
+    {
+      "digits": 1,
+      "raw": "0x1",
+      "normalized": "0x1",
+      "serializedBytes": 0
+    },
+    {
+      "digits": 3,
+      "raw": "0x111",
+      "normalized": "0x111",
+      "serializedBytes": 1
+    },
+    {
+      "digits": 5,
+      "raw": "0x11111",
+      "normalized": "0x11111",
+      "serializedBytes": 2
+    },
+    {
+      "digits": 7,
+      "raw": "0x1111111",
+      "normalized": "0x1111111",
+      "serializedBytes": 3
+    },
+    {
+      "digits": 9,
+      "raw": "0x111111111",
+      "normalized": "0x111111111",
+      "serializedBytes": 4
+    },
+    {
+      "digits": 11,
+      "raw": "0x11111111111",
+      "normalized": "0x11111111111",
+      "serializedBytes": 5
+    },
+    {
+      "digits": 13,
+      "raw": "0x1111111111111",
+      "normalized": "0x1111111111111",
+      "serializedBytes": 6
+    },
+    {
+      "digits": 15,
+      "raw": "0x111111111111111",
+      "normalized": "0x111111111111111",
+      "serializedBytes": 7
+    }
+  ],
+  "note": "All sampled odd-length hex inputs were accepted; serialized byte length truncates toward floor(digits/2)."
+}

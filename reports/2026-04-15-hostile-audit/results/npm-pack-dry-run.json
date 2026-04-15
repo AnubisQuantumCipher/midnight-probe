@@ -1,0 +1,36 @@
+[
+  {
+    "id": "midnight-probe@1.0.1",
+    "name": "midnight-probe",
+    "version": "1.0.1",
+    "size": 4454,
+    "unpackedSize": 11085,
+    "shasum": "9919e65a9895bfdacbae456080d2db13c51d0eaf",
+    "integrity": "sha512-T28zseZntJDtH+Ya77PBf0Ie7cqIk88PUrAl24GWZW53obuTd16OnB+FTGRye4M9FXr9/ohnRac+525Ua7Aojg==",
+    "filename": "midnight-probe-1.0.1.tgz",
+    "files": [
+      {
+        "path": "LICENSE",
+        "size": 1076,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 7946,
+        "mode": 420
+      },
+      {
+        "path": "contracts/MidnightProbeRegistry.compact",
+        "size": 587,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 1476,
+        "mode": 420
+      }
+    ],
+    "entryCount": 4,
+    "bundled": []
+  }
+]

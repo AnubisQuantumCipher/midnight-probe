@@ -67,6 +67,69 @@ export function buildMidnightOuterTx(innerTxHex: string, api: ApiPromise): strin
   return api.tx.midnight.sendMnTransaction(innerTxHex).toHex();
 }
 
+export async function submitMidnightMetadataTx(
+  innerTxHex: string,
+  api: ApiPromise,
+  timeoutMs = 30_000,
+): Promise<string> {
+  assertSupportedMidnightSignedExtensions(api);
+  return new Promise<string>((resolve, reject) => {
+    let unsubscribe: (() => void) | undefined;
+    let settled = false;
+
+    const settle = (action: () => void) => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      clearTimeout(timeoutHandle);
+      try {
+        unsubscribe?.();
+      } catch {
+        // best-effort cleanup only
+      }
+      action();
+    };
+
+    const timeoutHandle = setTimeout(() => {
+      settle(() => {
+        reject(new Error(`Metadata submission timed out after ${timeoutMs}ms without reaching a terminal status.`));
+      });
+    }, timeoutMs);
+
+    api.tx.midnight
+      .sendMnTransaction(innerTxHex)
+      .send((result) => {
+        if (result.status.isInvalid) {
+          settle(() => {
+            reject(new Error(`Transaction became invalid: ${result.status.toString()}`));
+          });
+          return;
+        }
+        if (result.status.isInBlock || result.status.isFinalized) {
+          settle(() => {
+            resolve(result.txHash.toString());
+          });
+        }
+      })
+      .then((handle) => {
+        unsubscribe = handle;
+        if (settled) {
+          try {
+            unsubscribe?.();
+          } catch {
+            // best-effort cleanup only
+          }
+        }
+      })
+      .catch((error) => {
+        settle(() => {
+          reject(error);
+        });
+      });
+  });
+}
+
 export async function validateMidnightOuterTx(
   outerTxHex: string,
   api: ApiPromise,

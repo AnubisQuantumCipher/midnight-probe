@@ -1,4 +1,4 @@
-import { mkdtemp } from 'node:fs/promises';
+import { mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -117,5 +117,19 @@ describe('compatibility report persistence', () => {
     expect(reloaded?.probes).toHaveLength(1);
     expect(reloaded?.matrices).toHaveLength(1);
     expect(reloaded?.selected?.matrixId).toBe('v4-stable');
+  });
+
+  it('does not silently treat malformed report JSON as a missing report', async () => {
+    const pathname = join(await mkdtemp(join(tmpdir(), 'midnight-probe-report-bad-')), 'report.json');
+    await writeFile(pathname, '{not-json\n', 'utf-8');
+
+    let message = '';
+    try {
+      await readCompatibilityReport(pathname);
+    } catch (error) {
+      message = error instanceof Error ? error.message : String(error);
+    }
+
+    expect(message).toContain('Invalid compatibility report JSON');
   });
 });

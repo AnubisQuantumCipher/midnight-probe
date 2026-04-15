@@ -139,6 +139,7 @@ export interface CompatibilityProbeRecord {
 export interface CompatibilityMatrixAttempt {
   matrixId: CompatibilityMatrixId;
   workspaceDir: string;
+  workspaceRetained?: boolean;
   packageVersions: Record<string, string>;
   compactcVersion: string;
   succeeded: boolean;

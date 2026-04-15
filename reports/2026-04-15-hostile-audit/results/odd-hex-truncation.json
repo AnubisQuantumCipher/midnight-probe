@@ -1,0 +1,8 @@
+{
+  "input": "0x123",
+  "normalized": "0x123",
+  "serializedBytes": 1,
+  "expectedNibbleCount": 3,
+  "observedHexByteLength": 1,
+  "note": "Odd-length hex is accepted and silently truncated by Buffer.from(..., \"hex\")."
+}

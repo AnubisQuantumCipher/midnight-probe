@@ -1,6 +1,12 @@
 import type { ApiPromise } from '@polkadot/api';
 
-import { buildMidnightOuterTx, createMidnightApi, submitMidnightOuterTx, validateMidnightOuterTx } from './polkadot-factory.js';
+import {
+  buildMidnightOuterTx,
+  createMidnightApi,
+  submitMidnightMetadataTx,
+  submitMidnightOuterTx,
+  validateMidnightOuterTx,
+} from './polkadot-factory.js';
 import type {
   MidnightConnectionOptions,
   SubmitStrategyId,
@@ -58,29 +64,11 @@ async function submitDuplicate(
   innerTxHex: string,
   outerTxHex: string,
   api: ApiPromise,
+  timeoutMs = 30_000,
 ) {
   if (strategy === 'metadata-extrinsic') {
     try {
-      const txHash = await new Promise<string>((resolve, reject) => {
-        let unsubscribe: (() => void) | undefined;
-        api.tx.midnight
-          .sendMnTransaction(innerTxHex)
-          .send((result) => {
-            if (result.status.isInvalid) {
-              unsubscribe?.();
-              reject(new Error(`Transaction became invalid: ${result.status.toString()}`));
-              return;
-            }
-            if (result.status.isInBlock || result.status.isFinalized) {
-              unsubscribe?.();
-              resolve(result.txHash.toString());
-            }
-          })
-          .then((handle) => {
-            unsubscribe = handle;
-          })
-          .catch(reject);
-      });
+      const txHash = await submitMidnightMetadataTx(innerTxHex, api, timeoutMs);
       return {
         strategy,
         outcome: 'accepted' as const,
@@ -125,6 +113,7 @@ export async function runChainCanary(
     sources?: ValidationSource[];
     submitDuplicate?: boolean;
     submitStrategy?: Exclude<SubmitStrategyId, 'wallet-sdk'>;
+    submitTimeoutMs?: number;
   },
 ): Promise<{
   observedAt: string;
@@ -148,7 +137,13 @@ export async function runChainCanary(
     const validation = await validateMidnightOuterTx(found.outerTxHex, api, options.sources);
     const submit =
       options.submitDuplicate
-        ? await submitDuplicate(options.submitStrategy ?? 'raw-rpc', found.innerTxHex, found.outerTxHex, api)
+        ? await submitDuplicate(
+            options.submitStrategy ?? 'raw-rpc',
+            found.innerTxHex,
+            found.outerTxHex,
+            api,
+            options.submitTimeoutMs,
+          )
         : {
             strategy: options.submitStrategy ?? 'raw-rpc',
             outcome: 'skipped' as const,

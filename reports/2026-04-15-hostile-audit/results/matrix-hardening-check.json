@@ -1,0 +1,26 @@
+{
+  "installCommand": {
+    "command": "npm",
+    "args": [
+      "install",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "cwd": "/var/folders/bg/pt9l6y1j47q642kp3z5blrmh0000gn/T/midnight-probe-v4-stable-Poo1jD",
+    "hasSecret": false,
+    "envKeys": [
+      "COMPACTC_VERSION",
+      "HOME",
+      "LANG",
+      "LOGNAME",
+      "PATH",
+      "SHELL",
+      "TMPDIR",
+      "USER"
+    ]
+  },
+  "workspaceRetained": false,
+  "workspaceExists": false,
+  "packageVersionCount": 13
+}

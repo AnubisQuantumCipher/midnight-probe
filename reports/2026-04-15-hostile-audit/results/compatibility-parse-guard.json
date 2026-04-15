@@ -1,0 +1,5 @@
+{
+  "reportPath": "/var/folders/bg/pt9l6y1j47q642kp3z5blrmh0000gn/T/midnight-probe-compat-check-LT3z14/report.json",
+  "rejectedMalformedReport": true,
+  "errorMessage": "Invalid compatibility report JSON at /var/folders/bg/pt9l6y1j47q642kp3z5blrmh0000gn/T/midnight-probe-compat-check-LT3z14/report.json: Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+}

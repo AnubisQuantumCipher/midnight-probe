@@ -1,0 +1,29 @@
+rules:
+  - id: matrix-npm-install-lifecycle
+    languages: [typescript, javascript]
+    severity: WARNING
+    message: Matrix runner executes npm install without --ignore-scripts, so lifecycle hooks from the copied workspace can run.
+    pattern: |
+      await runCommand('npm', ['install', ...], $DIR, $ENV)
+
+  - id: compatibility-swallow-parse-errors
+    languages: [typescript, javascript]
+    severity: WARNING
+    message: readCompatibilityReport treats all exceptions as "report missing", including malformed JSON and other unexpected failures.
+    pattern: |
+      try {
+        ...
+        return JSON.parse($RAW) as CompatibilityReport;
+      } catch {
+        return null;
+      }
+
+  - id: dynamic-import-hook
+    languages: [typescript, javascript]
+    severity: INFO
+    message: Dynamic import executes hook or adapter code from a filesystem path.
+    pattern-either:
+      - pattern: |
+          const $LOADED = (await import($URL)) as { ... };
+      - pattern: |
+          const $LOADED = (await import($URL));

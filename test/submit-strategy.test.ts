@@ -69,4 +69,44 @@ describe('submit strategy and validation', () => {
     expect(report.submit.outcome).toBe('accepted');
     expect(report.submit.txHash).toBe('0xwallet');
   });
+
+  it('fails fast when metadata submission never reaches a terminal status', async () => {
+    const stalledApi = makeFakeApi({
+      tx: {
+        midnight: {
+          sendMnTransaction(innerTxHex: string) {
+            return {
+              toHex: () => `0xfeed${innerTxHex.slice(2, 14)}`,
+              async send() {
+                return () => {};
+              },
+            };
+          },
+        },
+      },
+    });
+
+    const outcome = await Promise.race([
+      validateTransaction(
+        {
+          kind: 'deploy',
+          finalizedTxHex: makeFixtureTxHex(),
+        },
+        {
+          network: 'preprod',
+          api: stalledApi,
+          strategy: 'metadata-extrinsic',
+          submit: true,
+          submitTimeoutMs: 10,
+        },
+      ).then((report) => ({ kind: 'report' as const, report })),
+      new Promise<{ kind: 'timeout' }>((resolve) => setTimeout(() => resolve({ kind: 'timeout' }), 50)),
+    ]);
+
+    expect(outcome.kind).toBe('report');
+    if (outcome.kind === 'report') {
+      expect(outcome.report.submit.outcome).toBe('error');
+      expect(outcome.report.submit.detail).toContain('timed out');
+    }
+  });
 });

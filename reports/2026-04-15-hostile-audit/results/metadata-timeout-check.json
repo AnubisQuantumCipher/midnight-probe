@@ -1,0 +1,5 @@
+{
+  "elapsedMs": 12,
+  "outcome": "error",
+  "detail": "Metadata submission timed out after 10ms without reaching a terminal status."
+}

@@ -4,6 +4,7 @@ import {
   assertSupportedMidnightSignedExtensions,
   buildMidnightOuterTx,
   createMidnightApi,
+  submitMidnightMetadataTx,
   submitMidnightOuterTx,
   validateMidnightOuterTx,
 } from './polkadot-factory.js';
@@ -25,35 +26,13 @@ import {
   resolveRpcUrl,
 } from './util.js';
 
-async function submitWithMetadataStrategy(innerTxHex: string, api: ApiPromise): Promise<ProbeSubmitResult> {
+async function submitWithMetadataStrategy(
+  innerTxHex: string,
+  api: ApiPromise,
+  timeoutMs = 30_000,
+): Promise<ProbeSubmitResult> {
   try {
-    const txHash = await new Promise<string>((resolve, reject) => {
-      let unsubscribe: (() => void) | undefined;
-      let settled = false;
-
-      api.tx.midnight
-        .sendMnTransaction(innerTxHex)
-        .send((result) => {
-          if (settled) {
-            return;
-          }
-          if (result.status.isInvalid) {
-            settled = true;
-            unsubscribe?.();
-            reject(new Error(`Transaction became invalid: ${result.status.toString()}`));
-            return;
-          }
-          if (result.status.isInBlock || result.status.isFinalized) {
-            settled = true;
-            unsubscribe?.();
-            resolve(result.txHash.toString());
-          }
-        })
-        .then((handle) => {
-          unsubscribe = handle;
-        })
-        .catch(reject);
-    });
+    const txHash = await submitMidnightMetadataTx(innerTxHex, api, timeoutMs);
 
     return {
       strategy: 'metadata-extrinsic',
@@ -124,6 +103,7 @@ export async function validateTransaction(
     submit?: boolean;
     sources?: ValidationSource[];
     walletAdapter?: WalletSubmitAdapter;
+    submitTimeoutMs?: number;
   } = {},
 ): Promise<TransactionValidationReport> {
   const normalizedInput = normalizeProbeInput(input);
@@ -147,7 +127,7 @@ export async function validateTransaction(
     if (options.submit) {
       switch (strategy) {
         case 'metadata-extrinsic':
-          submit = await submitWithMetadataStrategy(innerTxHex, api);
+          submit = await submitWithMetadataStrategy(innerTxHex, api, options.submitTimeoutMs);
           break;
         case 'raw-rpc':
           submit = await submitWithRawRpcStrategy(outerTxHex, api);

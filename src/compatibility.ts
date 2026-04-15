@@ -17,11 +17,19 @@ export function resolveCompatibilityReportPath(customPath = DEFAULT_COMPATIBILIT
 export async function readCompatibilityReport(
   reportPath = DEFAULT_COMPATIBILITY_REPORT_PATH,
 ): Promise<CompatibilityReport | null> {
+  const resolvedPath = resolveCompatibilityReportPath(reportPath);
   try {
-    const raw = await readFile(resolveCompatibilityReportPath(reportPath), 'utf-8');
+    const raw = await readFile(resolvedPath, 'utf-8');
     return JSON.parse(raw) as CompatibilityReport;
-  } catch {
-    return null;
+  } catch (error) {
+    const candidate = error as NodeJS.ErrnoException | SyntaxError;
+    if (candidate && typeof candidate === 'object' && 'code' in candidate && candidate.code === 'ENOENT') {
+      return null;
+    }
+    if (error instanceof SyntaxError) {
+      throw new Error(`Invalid compatibility report JSON at ${resolvedPath}: ${error.message}`);
+    }
+    throw error;
   }
 }
 

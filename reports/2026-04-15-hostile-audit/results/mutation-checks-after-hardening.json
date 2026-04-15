@@ -1,0 +1,14 @@
+[
+  {
+    "mutation": "metadata-extrinsic submit path forced to error",
+    "exit_code": 1,
+    "killed": true,
+    "stdout_tail": "sed\"\n    },\n    {\n      \"name\": \"installs without lifecycle scripts and removes temp workspaces by default\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"finds a known tx hash and validates the rebuilt outer extrinsic\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"writes and reads report state\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"does not silently treat malformed report JSON as a missing report\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"keeps the attribution banner on stderr in json mode\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"returns a non-zero exit code for unknown commands\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"prints a resolver CTA for human matrix output\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"keeps resolver CTA text out of matrix json output\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"prints a resolver CTA for problematic fingerprint output\",\n      \"status\": \"passed\"\n    }\n  ]\n}"
+  },
+  {
+    "mutation": "normalizeHex accepts odd-length strings again",
+    "exit_code": 1,
+    "killed": true,
+    "stdout_tail": "sed\"\n    },\n    {\n      \"name\": \"installs without lifecycle scripts and removes temp workspaces by default\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"finds a known tx hash and validates the rebuilt outer extrinsic\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"writes and reads report state\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"does not silently treat malformed report JSON as a missing report\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"keeps the attribution banner on stderr in json mode\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"returns a non-zero exit code for unknown commands\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"prints a resolver CTA for human matrix output\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"keeps resolver CTA text out of matrix json output\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"prints a resolver CTA for problematic fingerprint output\",\n      \"status\": \"passed\"\n    }\n  ]\n}"
+  }
+]

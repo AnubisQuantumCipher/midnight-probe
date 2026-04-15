@@ -106,6 +106,9 @@ export function normalizeHex(value: string): `0x${string}` {
   if (!/^0x[0-9a-fA-F]+$/.test(prefixed)) {
     throw new Error(`Expected a hex value, received ${value}.`);
   }
+  if ((prefixed.length - 2) % 2 !== 0) {
+    throw new Error(`Expected an even-length hex value, received ${value}.`);
+  }
   return prefixed.toLowerCase() as `0x${string}`;
 }
 

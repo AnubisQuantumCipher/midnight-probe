@@ -1,0 +1,14 @@
+{
+  "workspaceDir": "/var/folders/bg/pt9l6y1j47q642kp3z5blrmh0000gn/T/midnight-probe-v4-stable-7qswRs",
+  "workspaceStillExists": true,
+  "packageVersionsApplied": {
+    "@midnight-ntwrk/ledger-v8": "8.0.3"
+  },
+  "preinstallRan": {
+    "secret": "matrix-env-secret",
+    "cwd": "/private/var/folders/bg/pt9l6y1j47q642kp3z5blrmh0000gn/T/midnight-probe-v4-stable-7qswRs"
+  },
+  "copiedSensitive": "local-secret-fixture",
+  "selected": "v4-stable",
+  "note": "runCompatibilityMatrix executes npm install lifecycle scripts with inherited process.env, can succeed with only a partial package-family rewrite, and leaves the copied workspace on disk."
+}
