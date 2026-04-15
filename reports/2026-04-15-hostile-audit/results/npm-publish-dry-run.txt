@@ -1,0 +1,96 @@
+
+> midnight-probe@1.0.2 prepublishOnly
+> npm run build && npm test
+
+
+> midnight-probe@1.0.2 build
+> tsc -p tsconfig.json
+
+
+> midnight-probe@1.0.2 test
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.4 [39m[90m/Users/sicarii/work/audits/midnight-probe-20260415T124122Z[39m
+
+ [32m✓[39m test/util.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 1[2mms[22m[39m
+ [32m✓[39m test/compatibility.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m test/chain-canary.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m test/cli.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m test/runtime-probe.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m test/tx-inspector.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m test/prepare-hook-and-matrix.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m test/submit-strategy.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m      Tests [22m [1m[32m21 passed[39m[22m[90m (21)[39m
+[2m   Start at [22m 12:20:19
+[2m   Duration [22m 764ms[2m (transform 271ms, setup 0ms, import 4.13s, tests 59ms, environment 0ms)[22m
+
+npm notice
+npm notice 📦  midnight-probe@1.0.2
+npm notice Tarball Contents
+npm notice 1.1kB LICENSE
+npm notice 7.9kB README.md
+npm notice 587B contracts/MidnightProbeRegistry.compact
+npm notice 31B dist/bin/cli.d.ts
+npm notice 152B dist/bin/cli.js
+npm notice 234B dist/bin/cli.js.map
+npm notice 11B dist/examples/basic-fingerprint.d.ts
+npm notice 254B dist/examples/basic-fingerprint.js
+npm notice 376B dist/examples/basic-fingerprint.js.map
+npm notice 11B dist/examples/test-deploy.d.ts
+npm notice 788B dist/examples/test-deploy.js
+npm notice 919B dist/examples/test-deploy.js.map
+npm notice 11B dist/examples/version-matrix.d.ts
+npm notice 367B dist/examples/version-matrix.js
+npm notice 434B dist/examples/version-matrix.js.map
+npm notice 835B dist/src/chain-canary.d.ts
+npm notice 5.1kB dist/src/chain-canary.js
+npm notice 4.3kB dist/src/chain-canary.js.map
+npm notice 1.1kB dist/src/cli-core.d.ts
+npm notice 10.6kB dist/src/cli-core.js
+npm notice 9.1kB dist/src/cli-core.js.map
+npm notice 983B dist/src/compatibility.d.ts
+npm notice 2.8kB dist/src/compatibility.js
+npm notice 2.9kB dist/src/compatibility.js.map
+npm notice 774B dist/src/index.d.ts
+npm notice 372B dist/src/index.js
+npm notice 369B dist/src/index.js.map
+npm notice 1.7kB dist/src/matrix-runner.d.ts
+npm notice 11.9kB dist/src/matrix-runner.js
+npm notice 8.8kB dist/src/matrix-runner.js.map
+npm notice 1.3kB dist/src/polkadot-factory.d.ts
+npm notice 5.0kB dist/src/polkadot-factory.js
+npm notice 4.4kB dist/src/polkadot-factory.js.map
+npm notice 399B dist/src/prepare-hook.d.ts
+npm notice 1.9kB dist/src/prepare-hook.js
+npm notice 2.0kB dist/src/prepare-hook.js.map
+npm notice 262B dist/src/runtime-probe.d.ts
+npm notice 3.0kB dist/src/runtime-probe.js
+npm notice 2.6kB dist/src/runtime-probe.js.map
+npm notice 544B dist/src/submit-strategy.d.ts
+npm notice 4.8kB dist/src/submit-strategy.js
+npm notice 3.6kB dist/src/submit-strategy.js.map
+npm notice 314B dist/src/tx-inspector.d.ts
+npm notice 3.5kB dist/src/tx-inspector.js
+npm notice 3.3kB dist/src/tx-inspector.js.map
+npm notice 4.8kB dist/src/types.d.ts
+npm notice 44B dist/src/types.js
+npm notice 105B dist/src/types.js.map
+npm notice 2.1kB dist/src/util.d.ts
+npm notice 7.0kB dist/src/util.js
+npm notice 7.5kB dist/src/util.js.map
+npm notice 1.5kB package.json
+npm notice Tarball Details
+npm notice name: midnight-probe
+npm notice version: 1.0.2
+npm notice filename: midnight-probe-1.0.2.tgz
+npm notice package size: 30.4 kB
+npm notice unpacked size: 134.7 kB
+npm notice shasum: 9787354101c19b6f9dd6232e09dad2a8bba3212c
+npm notice integrity: sha512-sBGn/2sAxBQVq[...]WxzkEIzOUBTkg==
+npm notice total files: 52
+npm notice
+npm notice Publishing to https://registry.npmjs.org/ with tag latest and default access (dry-run)
++ midnight-probe@1.0.2
